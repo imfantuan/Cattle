@@ -57,6 +57,10 @@ class CreateCode(View, Controller):
             self.validator.get_schema_path("/schemas/api/v1/code/create.json")
         )
 
+        if "cattle.sh/api/v1/execute" in data["content"]:
+            self.logger.info("Request is invalid")
+            raise InvalidRequest("Request is invalid")
+
         if not result:
             self.logger.info("Request is invalid")
             raise InvalidRequest(self.validator.get_error())
@@ -289,6 +293,10 @@ class ExecuteCode(View, Controller):
             request.body.decode('utf-8'),
             self.validator.get_schema_path("/schemas/api/v1/code/execute.json")
         )
+
+        if "cattle.sh/api/v1/execute" in data["content"]:
+            self.logger.info("Request is invalid")
+            raise InvalidRequest("Request is invalid")
 
         if not result:
             self.logger.info("Request is invalid")
